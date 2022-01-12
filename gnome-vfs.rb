@@ -7,6 +7,7 @@ class GnomeVfs < Formula
 
   def patches
     #From https://trac.macports.org/browser/trunk/dports/gnome/gnome-vfs/files/enable-deprecated.diff
+    #Patch from https://trac.macports.org/ticket/58956#comment:3 fixes SSL bug
     DATA
   end
 
@@ -91,5 +92,23 @@ __END__
  	$(VFS_CFLAGS)				\
 -	-DG_DISABLE_DEPRECATED			\
  	-DMODULES_PATH=\"$(libdir)/vfs/modules\"
+--- a/libgnomevfs/gnome-vfs-ssl.c
++++ b/libgnomevfs/gnome-vfs-ssl.c
+@@ -400,9 +400,6 @@ gnome_vfs_ssl_create_from_fd (GnomeVFSSS
+ 			}
+ 		}
 
+-                if (ssl->private->ssl->ctx)
+-                        SSL_CTX_free (ssl->private->ssl->ctx);
+-
+                 SSL_free (ssl->private->ssl);
+ 		g_free (ssl->private);
+ 		g_free (ssl);
+@@ -705,7 +702,6 @@ gnome_vfs_ssl_destroy (GnomeVFSSSL *ssl,
+ 		}
+ 	}
 
+-	SSL_CTX_free (ssl->private->ssl->ctx);
+ 	SSL_free (ssl->private->ssl);
+ 	close (ssl->private->sockfd);
+ 	if (ssl->private->timeout)
