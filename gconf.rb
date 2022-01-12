@@ -13,8 +13,6 @@ class Gconf < Formula
     sha256 yosemite:    "85f809fb483b3c78b283d3e7b681b133d106d991717d361c0bdd9596a81178ea"
   end
 
-  disable! date: "2020-12-08", because: :unmaintained
-
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
   depends_on "dbus"
